@@ -4,6 +4,12 @@ TSFramework is typescript microframework for an educational porposes
 
 ## Instalation
 
+Install package from public registry
+
+```bash
+npm install @danny270793/tsframework
+```
+
 ## Example
 
 Import the library
@@ -37,6 +43,12 @@ const port: number = 8000
 const app: TSFramework = new TSFramework()
 app.set('/api', apiRouter)
 app.run(port)
+```
+
+Test the library
+
+```bash
+curl -X GET http://127.0.0.1:8000//users/25/location/35?key1=value1&key2=value2
 ```
 
 ## Follow me
