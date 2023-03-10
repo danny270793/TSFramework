@@ -57,6 +57,10 @@ curl -X GET http://127.0.0.1:8000//users/25/location/35?key1=value1&key2=value2
 - [Github](https://www.github.com/danny270793/)
 - [LinkedIn](https://www.linkedin.com/in/danny270793)
 
+## LICENSE
+
+Licensed under the [MIT](license.md) License
+
 ## Version
 
 TSFramework version 1.0.0
