@@ -53,11 +53,13 @@ curl -X GET http://127.0.0.1:8000//users/25/location/35?key1=value1&key2=value2
 
 ## Follow me
 
--   [Youtube](https://www.youtube.com/channel/UC5MAQWU2s2VESTXaUo-ysgg)
--   [Github](https://www.github.com/danny270793/)
--   [LinkedIn](https://www.linkedin.com/in/danny270793)
+- [Youtube](https://www.youtube.com/channel/UC5MAQWU2s2VESTXaUo-ysgg)
+- [Github](https://www.github.com/danny270793/)
+- [LinkedIn](https://www.linkedin.com/in/danny270793)
 
 ## Version
 
-TSFramework version 1.0.0<br>
-Last update 07/03/2023
+TSFramework version 1.0.0
+
+Last update 09/03/2023
+
