@@ -33,7 +33,7 @@ export class TSFramework {
         }
 
         this.server = Http.createServer(
-            (request: Http.IncomingMessage, response: Http.ServerResponse) => {
+            async (request: Http.IncomingMessage, response: Http.ServerResponse) => {
                 const url: string | undefined = request.url
                 if (url === undefined) {
                     console.error('url of the request not defined')
@@ -54,7 +54,7 @@ export class TSFramework {
 
                 try {
                     const routerKey: string = routerKeys[0]
-                    this.routers[routerKey].enroute(
+                    await this.routers[routerKey].enroute(
                         routerKey,
                         request,
                         response
