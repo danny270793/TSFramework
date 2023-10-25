@@ -13,6 +13,7 @@ function createApp(): TSFramework {
     const apiRouter: Router = new Router()
     apiRouter.get(
         '/users',
+        [],
         /* eslint-disable @typescript-eslint/no-explicit-any */
         async (request: Request<any>): Promise<Request<any>> => {
             return request
@@ -20,6 +21,7 @@ function createApp(): TSFramework {
     )
     apiRouter.get(
         '/users/:id',
+        [],
         /* eslint-disable @typescript-eslint/no-explicit-any */
         async (request: Request<any>): Promise<Request<any>> => {
             return request
@@ -27,6 +29,7 @@ function createApp(): TSFramework {
     )
     apiRouter.get(
         '/users/:user_id/location/:location_id',
+        [],
         /* eslint-disable @typescript-eslint/no-explicit-any */
         async (request: Request<any>): Promise<Request<any>> => {
             return request
@@ -35,6 +38,7 @@ function createApp(): TSFramework {
 
     apiRouter.post(
         '/users',
+        [],
         /* eslint-disable @typescript-eslint/no-explicit-any */
         async (request: Request<any>): Promise<Request<any>> => {
             return request
@@ -42,6 +46,7 @@ function createApp(): TSFramework {
     )
     apiRouter.post(
         '/users/:id',
+        [],
         /* eslint-disable @typescript-eslint/no-explicit-any */
         async (request: Request<any>): Promise<Request<any>> => {
             return request
@@ -49,6 +54,7 @@ function createApp(): TSFramework {
     )
     apiRouter.post(
         '/users/:user_id/location/:location_id',
+        [],
         /* eslint-disable @typescript-eslint/no-explicit-any */
         async (request: Request<any>): Promise<Request<any>> => {
             return request
