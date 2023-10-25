@@ -7,7 +7,7 @@ export enum HttpVerb {
     POST = 'POST',
     PUT = 'PUT',
     PATCH = 'PATCH',
-    DELETE = 'DELETE'
+    DELETE = 'DELETE',
 }
 
 /**
@@ -23,7 +23,23 @@ export interface Request<T> {
 }
 
 export type RouterCallback<Req, Res> = (request: Request<Req>) => Promise<Res>
-export type MiddlewareCallback<Req, Res> = (request: Request<Req>) => Promise<[Res, any]>
+export type MiddlewareCallback<Req, Res> = (
+    request: Request<Req>,
+    next: NextCallback<Req, Res>
+) => Promise<Res | undefined>
+export type NextCallback<Req, Res> = (
+    request: Request<Req>
+) => Promise<Res | undefined>
+export type Endpoint = {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    [prefix: string]: {
+        callback: RouterCallback<any, any>
+        middlewares: MiddlewareCallback<any, any>[]
+    }
+}
+export type Endpoints = {
+    [method: string]: Endpoint
+}
 
 /**
  * Class that handle all http requests and dispatch to specific callback
@@ -32,10 +48,7 @@ export class Router {
     /**
      * Dictionary of the callbacks separated by method and prefix
      */
-    private endpoints: {
-        /* eslint-disable @typescript-eslint/no-explicit-any */
-        [method: string]: { [prefix: string]: {callback: RouterCallback<any, any>, middlewares: RouterCallback<any, any>[]} }
-    } = {
+    private endpoints: Endpoints = {
         GET: {},
         POST: {},
         PUT: {},
@@ -43,14 +56,12 @@ export class Router {
         DELETE: {},
     }
     urlToRegexp(url: string): RegExp {
-        return new RegExp(
-            `^${url.replace(/:\w+/g, '([^/]+)')}$`
-        )
+        return new RegExp(`^${url.replace(/:\w+/g, '([^/]+)')}$`)
     }
     checkUrlParametersFormat(url: string) {
         const regExp: RegExp = this.urlToRegexp(url)
         const urlRequestedMatches: RegExpMatchArray | null = url.match(regExp)
-        if(urlRequestedMatches === null){
+        if (urlRequestedMatches === null) {
             throw Error(`url "${url}" does not match regexp`)
         }
 
@@ -64,18 +75,25 @@ export class Router {
                 continue
             }
             const key: string = urlRequestedMatches[index].slice(1)
-            if(paramenters.includes(key)) {
-                throw Error(`url "${url}" have parameter "${key}" more than once`)
+            if (paramenters.includes(key)) {
+                throw Error(
+                    `url "${url}" have parameter "${key}" more than once`
+                )
             }
             paramenters.push(key)
         }
     }
-    setEndpoint<Req, Res>(method: HttpVerb, path: string, middlewares: MiddlewareCallback<Req, Res>[], callback: RouterCallback<Req, Res>) {
+    setEndpoint<Req, Res>(
+        method: HttpVerb,
+        path: string,
+        middlewares: MiddlewareCallback<Req, Res>[],
+        callback: RouterCallback<Req, Res>
+    ) {
         this.checkUrlParametersFormat(path)
 
         this.endpoints[method][path] = {
             callback,
-            middlewares
+            middlewares,
         }
     }
     /**
@@ -84,7 +102,11 @@ export class Router {
      * @param path path to register the callback
      * @param callback callback executen when request is received
      */
-    get<Req, Res>(path: string, middlewares: MiddlewareCallback<Req, Res>[], callback: RouterCallback<Req, Res>) {
+    get<Req, Res>(
+        path: string,
+        middlewares: MiddlewareCallback<Req, Res>[],
+        callback: RouterCallback<Req, Res>
+    ) {
         this.setEndpoint(HttpVerb.GET, path, middlewares, callback)
     }
     /**
@@ -93,7 +115,11 @@ export class Router {
      * @param path path to register the callback
      * @param callback callback executen when request is received
      */
-    post<Req, Res>(path: string, middlewares: MiddlewareCallback<Req, Res>[], callback: RouterCallback<Req, Res>) {
+    post<Req, Res>(
+        path: string,
+        middlewares: MiddlewareCallback<Req, Res>[],
+        callback: RouterCallback<Req, Res>
+    ) {
         this.setEndpoint(HttpVerb.POST, path, middlewares, callback)
     }
     /**
@@ -102,7 +128,11 @@ export class Router {
      * @param path path to register the callback
      * @param callback callback executen when request is received
      */
-    patch<Req, Res>(path: string, middlewares: MiddlewareCallback<Req, Res>[], callback: RouterCallback<Req, Res>) {
+    patch<Req, Res>(
+        path: string,
+        middlewares: MiddlewareCallback<Req, Res>[],
+        callback: RouterCallback<Req, Res>
+    ) {
         this.setEndpoint(HttpVerb.PATCH, path, middlewares, callback)
     }
     /**
@@ -111,7 +141,11 @@ export class Router {
      * @param path path to register the callback
      * @param callback callback executen when request is received
      */
-    put<Req, Res>(path: string, middlewares: MiddlewareCallback<Req, Res>[], callback: RouterCallback<Req, Res>) {
+    put<Req, Res>(
+        path: string,
+        middlewares: MiddlewareCallback<Req, Res>[],
+        callback: RouterCallback<Req, Res>
+    ) {
         this.setEndpoint(HttpVerb.PUT, path, middlewares, callback)
     }
     /**
@@ -120,7 +154,11 @@ export class Router {
      * @param path path to register the callback
      * @param callback callback executen when request is received
      */
-    delete<Req, Res>(path: string, middlewares: MiddlewareCallback<Req, Res>[], callback: RouterCallback<Req, Res>) {
+    delete<Req, Res>(
+        path: string,
+        middlewares: MiddlewareCallback<Req, Res>[],
+        callback: RouterCallback<Req, Res>
+    ) {
         this.setEndpoint(HttpVerb.DELETE, path, middlewares, callback)
     }
 
@@ -161,8 +199,7 @@ export class Router {
      * @returns the body as a json
      */
     parseBody(request: Http.IncomingMessage): Promise<any> {
-        /* eslint-disable @typescript-eslint/no-explicit-any */
-        return new Promise<any>((resolve, reject) => {
+        return new Promise<string>((resolve, reject) => {
             /* eslint-disable @typescript-eslint/no-explicit-any */
             const bodyParts: any = []
             request.on('data', (chunk) => bodyParts.push(chunk))
@@ -170,7 +207,7 @@ export class Router {
                 const body: string = Buffer.concat(bodyParts).toString()
                 try {
                     resolve(body === '' ? {} : JSON.parse(body))
-                } catch(error) {
+                } catch (error) {
                     reject(error)
                 }
             })
@@ -214,6 +251,27 @@ export class Router {
         return paramenters
     }
 
+    async iterateOverMiddlewares(
+        req: Request<any>,
+        callbacks: any[]
+    ): Promise<any | undefined> {
+        const first: any = callbacks[0]
+        if (first !== undefined) {
+            const extractedCllbacks: any[] = callbacks.filter(
+                (_, index: number) => index > 0
+            )
+            const result: any | undefined = await first(
+                req,
+                (newRequest: Request<any>) =>
+                    this.iterateOverMiddlewares(newRequest, extractedCllbacks)
+            )
+            if (result !== undefined) {
+                return result
+            }
+        }
+        return undefined
+    }
+
     /**
      * Execute the callback for the select prefix and request
      *
@@ -224,11 +282,7 @@ export class Router {
      * @returns
      */
     async execute(
-        /* eslint-disable @typescript-eslint/no-explicit-any */
-        endpoints: { [prefix: string]: {
-            callback: RouterCallback<any, any>,
-            middlewares: RouterCallback<any, any>[]
-        } },
+        endpoints: Endpoint,
         prefix: string,
         request: Http.IncomingMessage,
         response: Http.ServerResponse
@@ -266,35 +320,33 @@ export class Router {
         try {
             const body: string = await this.parseBody(request)
             const key: string = keys[0]
-            /* eslint-disable @typescript-eslint/no-explicit-any */
-            let frameworkRequest: Request<any> = {
+
+            const frameworkRequest: Request<any> = {
                 method: method,
                 url: pathname,
-                parameters: this.parseParameters(
-                    `${prefix}${key}`,
-                    pathname
-                ),
+                parameters: this.parseParameters(`${prefix}${key}`, pathname),
                 headers: this.parseHeaders(request.headers),
                 query: this.parseQuery(urlWithParsedQuery.query),
                 body,
             }
-            for(const middleware of endpoints[key].middlewares) {
-                const [middlewareRequest, result] = await middleware(frameworkRequest)
-                if(result === null) {
-                    frameworkRequest = middlewareRequest
-                } else {
-                    response.setHeader('Content-Type', 'application/json')
-                    response.write(JSON.stringify(result, null, 4))
-                    response.end()
-                    return
-                }
+
+            const middlewareResult: any | undefined =
+                await this.iterateOverMiddlewares(
+                    frameworkRequest,
+                    endpoints[key].middlewares
+                )
+            if (middlewareResult !== undefined) {
+                response.setHeader('Content-Type', 'application/json')
+                response.write(JSON.stringify(middlewareResult, null, 4))
+                response.end()
+                return
             }
-            /* eslint-disable @typescript-eslint/no-explicit-any */
+
             const result = await endpoints[key].callback(frameworkRequest)
             response.setHeader('Content-Type', 'application/json')
             response.write(JSON.stringify(result, null, 4))
             response.end()
-        } catch(error) {
+        } catch (error) {
             console.error(`error parsing body`)
             console.error(error)
             response.writeHead(500)
