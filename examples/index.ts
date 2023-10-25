@@ -1,34 +1,56 @@
-import { TSFramework } from './app/app'
-import { Request, Router } from './routes/router'
+import { TSFramework } from '../src/app/app'
+import {
+    Request,
+    Router,
+    MiddlewareCallback,
+    NextCallback,
+} from '../src/routes/router'
 
-async function middleware1 (request: Request<any>): Promise<[Request<any>, any]> {
+interface PostRequest {}
+
+interface PostResponse {}
+
+const middleware1: MiddlewareCallback<PostRequest, PostResponse> = async (
+    request: Request<PostRequest>,
+    next: NextCallback<PostRequest, PostResponse>
+): Promise<PostRequest | undefined> => {
     console.log(middleware1.name)
-    return [request, null]
+    return await next(request)
 }
 
-async function middleware2 (request: Request<any>): Promise<[Request<any>, any]> {
+const middleware2: MiddlewareCallback<PostRequest, PostResponse> = async (
+    request: Request<PostRequest>,
+    next: NextCallback<PostRequest, PostResponse>
+): Promise<PostRequest | undefined> => {
     console.log(middleware2.name)
-    return [request, {date: new Date()}]
+    return await next(request)
 }
 
-async function middleware3 (request: Request<any>): Promise<[Request<any>, any]> {
+interface GetRequest {}
+
+interface GetResponse {}
+
+const middleware3: MiddlewareCallback<GetRequest, GetResponse> = async (
+    request: Request<GetRequest>,
+    next: NextCallback<GetRequest, GetResponse>
+): Promise<PostRequest | undefined> => {
     console.log(middleware3.name)
-    return [request, null]
+    return await next(request)
 }
 
 const apiRouter: Router = new Router()
 apiRouter.get(
     '/users/:user_id/location/:location_id',
-    [middleware1, middleware2, middleware3],
-    async (request: Request<any>): Promise<Request<any>> => {
+    [middleware3],
+    async (request: Request<GetRequest>): Promise<Request<GetRequest>> => {
         console.log('get')
         return request
     }
 )
 apiRouter.post(
     '/users/:user_id/location/:location_id',
-    [middleware1, middleware2, middleware3],
-    async (request: Request<any>): Promise<Request<any>> => {
+    [middleware1, middleware2],
+    async (request: Request<PostRequest>): Promise<Request<PostRequest>> => {
         console.log('post')
         return request
     }
