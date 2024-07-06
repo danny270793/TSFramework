@@ -1,4 +1,9 @@
-export interface VerbRoutes {[key: string]: Function}
+import { Request } from './request'
+export type RouteCallback = (request: Request<any>) => Promise<any>
+
+export interface VerbRoutes {
+    [key: string]: RouteCallback
+}
 export interface Routes {
     GET: VerbRoutes
     POST: VerbRoutes
@@ -10,7 +15,7 @@ export const routes: Routes = {
     GET: {},
     POST: {},
     DELETE: {},
-    PUT: {}
+    PUT: {},
 }
 
 export class SubRouter {
@@ -18,16 +23,16 @@ export class SubRouter {
     constructor(prefix: string) {
         this.prefix = prefix
     }
-    async get(path: string, callback: Function): Promise<void> {
+    async get(path: string, callback: RouteCallback): Promise<void> {
         routes.GET[`${this.prefix}${path}`] = callback
     }
-    async post(path: string, callback: Function): Promise<void> {
+    async post(path: string, callback: RouteCallback): Promise<void> {
         routes.POST[`${this.prefix}${path}`] = callback
     }
-    async put(path: string, callback: Function): Promise<void> {
+    async put(path: string, callback: RouteCallback): Promise<void> {
         routes.PUT[`${this.prefix}${path}`] = callback
     }
-    async delete(path: string, callback: Function): Promise<void> {
+    async delete(path: string, callback: RouteCallback): Promise<void> {
         routes.DELETE[`${this.prefix}${path}`] = callback
     }
 }
@@ -39,16 +44,16 @@ export class Router {
         const router: SubRouter = new SubRouter(path)
         callback(router)
     }
-    static async get(path: string, callback: Function): Promise<void> {
+    static async get(path: string, callback: RouteCallback): Promise<void> {
         routes.GET[path] = callback
     }
-    static async post(path: string, callback: Function): Promise<void> {
+    static async post(path: string, callback: RouteCallback): Promise<void> {
         routes.POST[path] = callback
     }
-    static async put(path: string, callback: Function): Promise<void> {
+    static async put(path: string, callback: RouteCallback): Promise<void> {
         routes.PUT[path] = callback
     }
-    static async delete(path: string, callback: Function): Promise<void> {
+    static async delete(path: string, callback: RouteCallback): Promise<void> {
         routes.DELETE[path] = callback
     }
 }
