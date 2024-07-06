@@ -60,7 +60,7 @@ export abstract class Server  {
     static parseBody(request: Http.IncomingMessage): Promise<any> {
         return new Promise<string>((resolve, reject) => {
             const bodyParts: any = []
-            request.on('data', (chunk) => bodyParts.push(chunk))
+            request.on('data', (chunk: any) => bodyParts.push(chunk))
             request.on('end', () => {
                 const body: string = Buffer.concat(bodyParts).toString()
                 try {
@@ -75,7 +75,7 @@ export abstract class Server  {
     static on(port: number) {
         console.log(`listening http://127.0.0.1:${port}`)
 
-        Http.createServer(
+        const httpServer: Http.Server = Http.createServer(
             async (request: Http.IncomingMessage, response: Http.ServerResponse) => {
                 try {
                     const url: string | undefined = request.url
@@ -147,6 +147,8 @@ export abstract class Server  {
                     response.end()
                 }
             }
-        ).listen(port)
+        )
+        
+        httpServer.listen(port)
     }
 }
