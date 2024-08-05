@@ -1,5 +1,16 @@
 # TSFramework
 
+[![Github pipeline status](https://github.com/danny270793/TSFramework/actions/workflows/releaser.yaml/badge.svg)](https://github.com/danny270793/TSFramework/actions/workflows/release.yaml)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/danny270793/TSFramework)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/danny270793/TSFramework/total)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/danny270793/TSFramework)
+![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/%40danny270793/tsframework)
+![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/%40danny270793%2Ftsframework)
+![GitHub repo size](https://img.shields.io/github/repo-size/danny270793/tsframework)
+![NPM Downloads](https://img.shields.io/npm/dy/%40danny270793%2Ftsframework)
+![NPM Type Definitions](https://img.shields.io/npm/types/%40danny270793%2Ftsframework)
+
+
 TSFramework is typescript microframework for an educational porposes
 
 ## Instalation
@@ -53,17 +64,19 @@ curl -X GET http://127.0.0.1:8000//users/25/location/35?key1=value1&key2=value2
 
 ## Follow me
 
-- [Youtube](https://www.youtube.com/channel/UC5MAQWU2s2VESTXaUo-ysgg)
-- [Github](https://www.github.com/danny270793/)
-- [LinkedIn](https://www.linkedin.com/in/danny270793)
+[![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white)](https://www.youtube.com/channel/UC5MAQWU2s2VESTXaUo-ysgg)
+[![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://www.github.com/danny270793/)
+[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/danny270793)
 
 ## LICENSE
 
-Licensed under the [MIT](license.md) License
+[![GitHub License](https://img.shields.io/github/license/danny270793/TSFramework)](license.md)
 
 ## Version
 
-TSFramework version 1.0.0
+![GitHub Tag](https://img.shields.io/github/v/tag/danny270793/TSFramework)
+![GitHub Release](https://img.shields.io/github/v/release/danny270793/tsframework)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/danny270793/tsframework)
+![NPM Version](https://img.shields.io/npm/v/%40danny270793%2Ftsframework)
 
 Last update 09/03/2023
-
