@@ -5,10 +5,9 @@
 
 [![install size](https://packagephobia.com/badge?p=@danny270793/tsframework)](https://packagephobia.com/result?p=@danny270793/tsframework)
 ![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/%40danny270793%2Ftsframework)
-
+![GitHub repo size](https://img.shields.io/github/repo-size/danny270793/tsframework)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/danny270793/TSFramework)
 ![npm bundle size (scoped)](https://img.shields.io/bundlephobia/min/%40danny270793/tsframework)
-![GitHub repo size](https://img.shields.io/github/repo-size/danny270793/tsframework)
 
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/danny270793/TSFramework)
 ![NPM Downloads](https://img.shields.io/npm/dy/%40danny270793%2Ftsframework)
